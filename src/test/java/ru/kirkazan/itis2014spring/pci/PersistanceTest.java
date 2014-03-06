@@ -25,6 +25,7 @@ public class PersistanceTest
     EntityManagerFactory factory;
     EntityManager manager;
 
+
     @Before
     public void init() {
         factory = Persistence.createEntityManagerFactory("ru.kirkazan.itis2014spring.pci");
