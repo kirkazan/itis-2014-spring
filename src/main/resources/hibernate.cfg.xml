@@ -10,7 +10,6 @@
 
         <property name="hibernate.hbm2ddl.auto">create-drop</property>
 
-        <mapping class="ru.kirkazan.itis2014spring.pci.TestEntity"/>
     </session-factory>
 
 </hibernate-configuration>
