@@ -1,9 +1,7 @@
 package ru.kirkazan.itis2014spring.pci;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.annotation.Generated;
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
@@ -16,10 +14,14 @@ import java.util.List;
  */
 @Entity
 public class Patient {
-    @Id
+    @Id @GeneratedValue()
     private Integer id;
     @Column
-    private String fio;
+    private String surname;
+    @Column
+    private String name;
+    @Column
+    private String father;
     @Column
     private Date dateOfBirth;
     @OneToMany    (mappedBy = "patient")
@@ -37,14 +39,6 @@ public class Patient {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getFio() {
-        return fio;
-    }
-
-    public void setFio(String fio) {
-        this.fio = fio;
     }
 
     public Date getDateOfBirth() {
@@ -92,11 +86,38 @@ public class Patient {
     public String toString() {
         return "Patient{" +
                 "id=" + id +
-                ", fio='" + fio + '\'' +
+                ", surname='" + surname + '\'' +
+                ", name='" + name + '\'' +
+                ", father='" + father + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
                 ", listAddress=" + listAddress +
                 ", listDocuments=" + listDocuments +
                 ", listRegistrations=" + listRegistrations +
+                ", contact='" + contact + '\'' +
                 '}';
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getFather() {
+        return father;
+    }
+
+    public void setFather(String father) {
+        this.father = father;
     }
 }
