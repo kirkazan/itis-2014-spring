@@ -9,8 +9,6 @@ public class PatientSearchController {
 
     List<Patient> search(String searchString) {
 
-
-
         return null;
     }
 
