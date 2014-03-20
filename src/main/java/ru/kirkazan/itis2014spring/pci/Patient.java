@@ -1,6 +1,5 @@
 package ru.kirkazan.itis2014spring.pci;
 
-import javax.annotation.Generated;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -27,7 +26,7 @@ public class Patient {
     @OneToMany    (mappedBy = "patient")
     private List<Address> listAddress;
     @OneToMany  (mappedBy = "patient")
-    private List<Documents> listDocuments;
+    private List<Document> listDocuments;
     @OneToMany (mappedBy = "patient")
     private List<Registration> listRegistrations;
     @Column
@@ -57,11 +56,11 @@ public class Patient {
         this.listAddress = listAddress;
     }
 
-    public List<Documents> getListDocuments() {
+    public List<Document> getListDocuments() {
         return listDocuments;
     }
 
-    public void setListDocuments(List<Documents> listDocuments) {
+    public void setListDocuments(List<Document> listDocuments) {
         this.listDocuments = listDocuments;
     }
 

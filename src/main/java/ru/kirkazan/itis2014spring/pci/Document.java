@@ -14,7 +14,8 @@ import java.util.Date;
  * To change this template use File | Settings | File Templates.
  */
 @Entity
-public class Documents {
+public class Document
+{
     @Id
     private Integer id;
     @Column
@@ -101,7 +102,7 @@ public class Documents {
 
     @Override
     public String toString() {
-        return "Documents{" +
+        return "Document{" +
                 "id=" + id +
                 ", series=" + series +
                 ", number=" + number +
