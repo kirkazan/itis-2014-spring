@@ -6,12 +6,11 @@ import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.classic.Session;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -25,10 +24,20 @@ public class PatientServiceHibernateTest
     {
         PatientService service = new PatientServiceHibernate(sessionFactory);
 
-        assertEquals(1, service.searchByName("Садыков", "Эдуард", "Рустемович").size());
+        assertEquals(1, service.searchByName(surname, name, father).size());
 
         assertEquals(0, service.searchByName("Нет", "Такого", "Человека").size());
 
+    }
+
+    @Test
+    public void searchByFioAndBd()
+    {
+        PatientService service = new PatientServiceHibernate(sessionFactory);
+
+        assertEquals("should be found", 1, service.searchByFioAndBd(surname.substring(0,1), name.substring(0,1), father.substring(0,1), 1982).size());
+        assertEquals("should be found", 1, service.searchByFioAndBd(surname.substring(0,1), name.substring(0,1), father.substring(0,1), 82).size());
+        assertEquals("should be empty", 0, service.searchByFioAndBd("Н", "Е", "Т", 66).size());
     }
 
     @Test
@@ -39,69 +48,32 @@ public class PatientServiceHibernateTest
         List<Patient> list = (List<Patient>) query.list();
         session.close();
         assertEquals(1, list.size());
+        logger.info(list.toString());
     }
 
 
-    SessionFactory sessionFactory;
-    Session session;
+    private static SessionFactory sessionFactory;
 
-    private Logger logger = LoggerFactory.getLogger(PatientServiceHibernateTest.class);
+    private static Logger logger = LoggerFactory.getLogger(PatientServiceHibernateTest.class);
 
-    @Before
-    public void init() {
+    static String surname = "Садыков";
+    static String name = "Эдуард";
+    static String father = "Рустемович";
+
+    @BeforeClass
+    public static void init() {
         sessionFactory = new Configuration().configure().buildSessionFactory();
 
         Session session = sessionFactory.openSession();
         session.getTransaction().begin();
-        /*Patient[] listPat = new Patient[12];
-        List<String> sur = new ArrayList<String>();
-        sur.add("Иванов");
-        sur.add("Петров");
-        sur.add("Сидоров");
-        sur.add("Стрелки");
-        sur.add("Кошкин");
-        sur.add("Кошечкин");
-        sur.add("Котяткин");
-        sur.add("Иваненко");
-        sur.add("Петров");
-        List<String> nam = new ArrayList<String>();
-        nam.add("Михаил");
-        nam.add("Руслан");
-        nam.add("Максим");
-        nam.add("Антон");
-        nam.add("Илья");
-        nam.add("Павел");
-        nam.add("Андрей");
-        nam.add("Алексей");
-        nam.add("Александр");
-        List<String> fath = new ArrayList<String>();
-        fath.add("Иванович");
-        fath.add("Петрович");
-        fath.add("Сидорович");
-        fath.add("Михаилович");
-        fath.add("Раилевич");
-        fath.add("Рустемович");
-        fath.add("Ильич");
-        fath.add("Максимович");
-        fath.add("Антонович");
-        for (int i = 0; i < listPat.length; i++) {
-            listPat[i] = new Patient();
-            for (int j = 0; j < sur.size(); j++) {
-                int k = (int) Math.round(8 * Math.random());
-                listPat[i].setSurname(sur.get(k));
-                int k1 = (int) Math.round(8 * Math.random());
-                listPat[i].setName(nam.get(k1));
-                int k2 = (int) Math.round(8 * Math.random());
-                listPat[i].setFather(fath.get(k2));
-            }
-            listPat[i].setDateOfBirth(new Date());
-            session.persist(listPat[i]);
 
-        }*/
         Patient patient = new Patient();
-        patient.setFather("Рустемович");
-        patient.setName("Эдуард");
-        patient.setSurname("Садыков");
+        patient.setFather(father);
+        patient.setName(name);
+        patient.setSurname(surname);
+        Calendar bd = Calendar.getInstance();
+        bd.set(1982, Calendar.APRIL, 7);
+        patient.setDateOfBirth(bd.getTime());
         session.persist(patient);
         session.flush();
         session.getTransaction().commit();
@@ -111,8 +83,8 @@ public class PatientServiceHibernateTest
         }
     }
 
-    @After
-    public void destroy() {
+    @AfterClass
+    public static void destroy() {
         logger.info("Destroying...");
 
         if (sessionFactory != null) {

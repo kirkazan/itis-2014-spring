@@ -22,6 +22,7 @@ public class Patient {
     @Column
     private String father;
     @Column
+    @Temporal(TemporalType.DATE)
     private Date dateOfBirth;
     @OneToMany    (mappedBy = "patient")
     private List<Address> listAddress;
@@ -89,10 +90,7 @@ public class Patient {
                 ", name='" + name + '\'' +
                 ", father='" + father + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
-                ", listAddress=" + listAddress +
-                ", listDocuments=" + listDocuments +
-                ", listRegistrations=" + listRegistrations +
-                ", contact='" + contact + '\'' +
+
                 '}';
     }
 

@@ -3,6 +3,8 @@ package ru.kirkazan.itis2014spring.pci;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Calendar;
 import java.util.List;
@@ -13,6 +15,7 @@ import java.util.List;
  */
 public class PatientServiceHibernate implements PatientService
 {
+    private Logger logger = LoggerFactory.getLogger(PatientServiceHibernate.class);
 
     private final SessionFactory sessionFactory;
 
@@ -35,18 +38,33 @@ public class PatientServiceHibernate implements PatientService
     }
 
     @Override
-    public List<Patient> searchByFioAndBd(char surname, char name, char patrName, int year)
+    public List<Patient> searchByFioAndBd(String surname, String name, String patrName, int year)
     {
         Session session = sessionFactory.openSession();
-        Query query = session.createQuery("from Patient p" +
-                " where p.surname like :surname and p.name = :name and p.father = :patrName" +
-                " and p.dateOfBirth > :date");
-        query.setCharacter("surname", surname);
-        query.setCharacter("name", name);
-        query.setCharacter("patrName", patrName);
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.YEAR, (-1) * year);
-        query.setCalendarDate("date", calendar);
+        Query query = session.createQuery("from Patient p"
+               + " where p.surname like :surname and p.name like :name and p.father like :patrName"
+               + " and p.dateOfBirth != :dateFrom and p.dateOfBirth != :dateTo"
+        );
+        query.setString("surname",  surname + "%");
+        query.setString("name",  "" + name + '%');
+        query.setString("patrName",  "" + patrName + '%');
+
+        int realYear;
+        if (year > 100)
+            realYear = year;
+        else if (Calendar.getInstance().get(Calendar.YEAR) <= year)
+            realYear = 2000 + year;
+        else
+            realYear = 1900 + year;
+
+        Calendar dateFrom = Calendar.getInstance();
+        dateFrom.set(realYear, Calendar.JANUARY, 1);
+        Calendar dateTo = Calendar.getInstance();
+        dateTo.set(realYear, Calendar.DECEMBER, 31);
+
+        query.setDate("dateFrom", dateFrom.getTime());
+        query.setDate("dateTo", dateTo.getTime());
+
         List<Patient> list = (List<Patient>) query.list();
         session.close();
         return list;
