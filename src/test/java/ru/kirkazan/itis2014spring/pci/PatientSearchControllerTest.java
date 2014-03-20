@@ -24,7 +24,7 @@ public class PatientSearchControllerTest
     {
         patientController.search("СЭР82");
 
-        Mockito.verify(patientService).searchByFioAndBd("C","Э","Р",82);
+        Mockito.verify(patientService).searchByFioAndBd("С","Э","Р",82);
     }
 
     @Test

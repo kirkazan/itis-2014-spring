@@ -22,7 +22,7 @@ public class PatientSearchController {
                 str += String.valueOf(c2);
                 str += String.valueOf(c1);
                 Integer number = Integer.valueOf(str);
-                return patientService.searchByFioAndBd(searchString.charAt(0), searchString.charAt(1), searchString.charAt(2), number);
+                return patientService.searchByFioAndBd(searchString.substring(0,1), searchString.substring(1,2), searchString.substring(2,3), number);
             }
         }
         if (searchString.length() > 5) {
