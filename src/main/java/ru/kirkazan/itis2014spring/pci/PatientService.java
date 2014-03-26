@@ -11,4 +11,9 @@ public interface PatientService
     List<Patient> searchByName(String surname, String name, String patrName);
 
     List<Patient> searchByFioAndBd (String surname, String name, String patrName, int year);
+
+    List<Patient> searchByContact (String contact);
+
+    List<Patient> searchByDocument (String series, String number);
+
 }

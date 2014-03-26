@@ -69,4 +69,16 @@ public class PatientServiceHibernate implements PatientService
         session.close();
         return list;
     }
+
+    @Override
+    public List<Patient> searchByContact(String contact)
+    {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public List<Patient> searchByDocument(String series, String number)
+    {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
 }
