@@ -19,9 +19,9 @@ public class Document
     @Id
     private Integer id;
     @Column
-    private Integer series;
+    private String series;
     @Column
-    private Integer number;
+    private String number;
     @Column
     private Date dateFrom;
     @Column
@@ -36,28 +36,27 @@ public class Document
     @ManyToOne
     private TypeDocuments type;
 
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public String getSeries() {
+        return series;
+    }
+
+    public void setSeries(String series) {
+        this.series = series;
+    }
     public Integer getId() {
         return id;
     }
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getSeries() {
-        return series;
-    }
-
-    public void setSeries(Integer series) {
-        this.series = series;
-    }
-
-    public Integer getNumber() {
-        return number;
-    }
-
-    public void setNumber(Integer number) {
-        this.number = number;
     }
 
     public Date getDateFrom() {
@@ -112,4 +111,5 @@ public class Document
                 ", organization=" + organization +
                 '}';
     }
+
 }
