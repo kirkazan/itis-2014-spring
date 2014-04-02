@@ -1,5 +1,8 @@
 package ru.kirkazan.itis2014spring.pci;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -8,8 +11,10 @@ import java.util.StringTokenizer;
 /**
  * Created by Татьяна on 06.03.14.
  */
+@Controller
 public class PatientSearchController {
 
+    @Autowired
     private PatientService patientService;
 
     public List<Patient> search(String searchString) {
