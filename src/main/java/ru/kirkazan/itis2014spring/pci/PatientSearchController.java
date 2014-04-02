@@ -1,5 +1,11 @@
 package ru.kirkazan.itis2014spring.pci;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -8,21 +14,25 @@ import java.util.StringTokenizer;
 /**
  * Created by Татьяна on 06.03.14.
  */
+@Controller
 public class PatientSearchController {
 
+    @Autowired
     private PatientService patientService;
 
-    public List<Patient> search(String searchString) {
+    @RequestMapping("patient")
+    @ResponseBody
+    public List<Patient> search(@RequestParam String s) {
 
-        CheckResultFIOBD res = CheckResultFIOBD.match(searchString);
+        CheckResultFIOBD res = CheckResultFIOBD.match(s);
         if (res.match)
             return patientService.searchByFioAndBd(res.surname, res.name, res.patrName, res.year);
 
-        CheckResultName res1 = CheckResultName.match(searchString);
+        CheckResultName res1 = CheckResultName.match(s);
         if (res1.match)
             return patientService.searchByName(res1.surname, res1.name, res1.patrName);
 
-        CheckResultContact res2 = CheckResultContact.match(searchString);
+        CheckResultContact res2 = CheckResultContact.match(s);
         if (res2.match)
             return patientService.searchByContact(res2.contact);
 

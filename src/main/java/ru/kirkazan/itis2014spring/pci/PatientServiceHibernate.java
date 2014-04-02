@@ -5,6 +5,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
 import java.util.List;
@@ -13,15 +15,22 @@ import java.util.List;
  * @author esadykov
  * @since 20.03.14 14:15
  */
+@Service
 public class PatientServiceHibernate implements PatientService
 {
     private Logger logger = LoggerFactory.getLogger(PatientServiceHibernate.class);
 
-    private final SessionFactory sessionFactory;
+    @Autowired
+    private SessionFactory sessionFactory;
 
     public PatientServiceHibernate(SessionFactory sessionFactory)
     {
         this.sessionFactory = sessionFactory;
+    }
+
+    public PatientServiceHibernate()
+    {
+
     }
 
     @Override

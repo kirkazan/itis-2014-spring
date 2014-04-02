@@ -65,7 +65,7 @@ public class PatientServiceHibernateTest
     public void all()
     {
         Session session = sessionFactory.openSession();
-        Query query = session.createQuery("from Patient");
+        Query query = session.createQuery("select p from Patient p");
         List<Patient> list = (List<Patient>) query.list();
         session.close();
         assertEquals(1, list.size());
