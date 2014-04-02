@@ -73,12 +73,24 @@ public class PatientServiceHibernate implements PatientService
     @Override
     public List<Patient> searchByContact(String contact)
     {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+
+        Session session = sessionFactory.openSession();
+        Query query = session.createQuery("from Patient p where p.contact = :contact");
+        query.setString("contact", contact);
+        List<Patient> list = (List<Patient>) query.list();
+        session.close();
+        return list;
     }
 
     @Override
     public List<Patient> searchByDocument(String series, String number)
     {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+
+        Session session = sessionFactory.openSession();
+        Query query = session.createQuery("from Patient p where p.series = :series and p.number = :number");
+        query.setString("series", series);
+        query.setString("number", number);
+        List<Patient> list = (List<Patient>) query.list();
+        return list;
     }
 }

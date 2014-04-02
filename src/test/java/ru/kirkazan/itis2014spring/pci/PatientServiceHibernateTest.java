@@ -40,6 +40,27 @@ public class PatientServiceHibernateTest
         assertEquals("should be empty", 0, service.searchByFioAndBd("Н", "Е", "Т", 66).size());
     }
 
+
+    @Test
+    public void searchByContact() {
+
+        PatientService service = new PatientServiceHibernate(sessionFactory);
+
+        assertEquals(1, service.searchByContact(contact).size());
+        assertEquals(0, service.searchByContact("88888888888").size());
+    }
+
+    @Test
+    public void searchByDocument() {
+
+        PatientService service = new PatientServiceHibernate(sessionFactory);
+        assertEquals(1, service.searchByDocument(series, number).size());
+        assertEquals(1, service.searchByDocument(null, number).size());
+        assertEquals(1, service.searchByDocument("", number));
+        assertEquals(0, service.searchByDocument("33", "44").size());
+
+    }
+
     @Test
     public void all()
     {
@@ -59,6 +80,10 @@ public class PatientServiceHibernateTest
     static String surname = "Садыков";
     static String name = "Эдуард";
     static String father = "Рустемович";
+    static String contact = "89172777666";
+    static String series = "9207";
+    static String number = "223344";
+
 
     @BeforeClass
     public static void init() {
@@ -71,6 +96,7 @@ public class PatientServiceHibernateTest
         patient.setFather(father);
         patient.setName(name);
         patient.setSurname(surname);
+        patient.setContact(contact);
         Calendar bd = Calendar.getInstance();
         bd.set(1982, Calendar.APRIL, 7);
         patient.setDateOfBirth(bd.getTime());
