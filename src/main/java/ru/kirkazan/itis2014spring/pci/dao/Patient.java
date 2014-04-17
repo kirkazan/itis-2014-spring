@@ -1,4 +1,4 @@
-package ru.kirkazan.itis2014spring.pci;
+package ru.kirkazan.itis2014spring.pci.dao;
 
 import javax.persistence.*;
 import java.util.Date;

@@ -1,6 +1,5 @@
-package ru.kirkazan.itis2014spring.pci;
+package ru.kirkazan.itis2014spring.pci.dao;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -9,21 +8,19 @@ import javax.persistence.ManyToOne;
  * Created with IntelliJ IDEA.
  * User: Кристина
  * Date: 27.02.14
- * Time: 18:14
+ * Time: 18:48
  * To change this template use File | Settings | File Templates.
- */
+ */          
 @Entity
-public class Address {
+public class Registration {
     @Id
     private Integer id;
-    @Column
-    private String address;
 
     @ManyToOne
     private Patient patient;
 
     @ManyToOne
-    private TypeAddress type;
+    private Organization organization;
 
     public Integer getId() {
         return id;
@@ -31,14 +28,6 @@ public class Address {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     public Patient getPatient() {
@@ -49,21 +38,20 @@ public class Address {
         this.patient = patient;
     }
 
-    public TypeAddress getType() {
-        return type;
+    public Organization getOrganization() {
+        return organization;
     }
 
-    public void setType(TypeAddress type) {
-        this.type = type;
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
     }
 
     @Override
     public String toString() {
-        return "Address{" +
+        return "Registration{" +
                 "id=" + id +
-                ", address='" + address + '\'' +
                 ", patient=" + patient +
-                ", type=" + type +
+                ", organization=" + organization +
                 '}';
     }
 }

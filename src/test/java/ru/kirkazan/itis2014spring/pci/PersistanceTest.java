@@ -1,11 +1,11 @@
 package ru.kirkazan.itis2014spring.pci;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.kirkazan.itis2014spring.pci.dao.Patient;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

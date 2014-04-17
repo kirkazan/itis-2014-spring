@@ -6,6 +6,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+import ru.kirkazan.itis2014spring.pci.service.PatientService;
+import ru.kirkazan.itis2014spring.pci.web.PatientSearchController;
 
 /**
  * Created by Татьяна on 06.03.14.

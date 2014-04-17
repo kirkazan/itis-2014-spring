@@ -1,4 +1,4 @@
-package ru.kirkazan.itis2014spring.pci;
+package ru.kirkazan.itis2014spring.pci.dao;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,11 +8,11 @@ import javax.persistence.Id;
  * Created with IntelliJ IDEA.
  * User: Кристина
  * Date: 27.02.14
- * Time: 18:45
+ * Time: 18:17
  * To change this template use File | Settings | File Templates.
  */
 @Entity
-public class TypeDocuments {
+public class TypeAddress {
     @Id
     private Integer id;
     @Column
@@ -36,7 +36,7 @@ public class TypeDocuments {
 
     @Override
     public String toString() {
-        return "TypeDocuments{" +
+        return "TypeAddress{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 '}';

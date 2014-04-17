@@ -1,34 +1,22 @@
-package ru.kirkazan.itis2014spring.pci;
+package ru.kirkazan.itis2014spring.pci.dao;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 
 /**
  * Created with IntelliJ IDEA.
  * User: Кристина
  * Date: 27.02.14
- * Time: 18:36
+ * Time: 18:38
  * To change this template use File | Settings | File Templates.
  */
 @Entity
-public class Organization {
+public class TypeOrganization {
     @Id
     private Integer id;
     @Column
     private String name;
-
-    @ManyToOne
-    private TypeOrganization type;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -38,20 +26,19 @@ public class Organization {
         this.name = name;
     }
 
-    public TypeOrganization getType() {
-        return type;
+    public Integer getId() {
+        return id;
     }
 
-    public void setType(TypeOrganization type) {
-        this.type = type;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     @Override
     public String toString() {
-        return "Organization{" +
+        return "TypeOrganization{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", type=" + type +
                 '}';
     }
 }

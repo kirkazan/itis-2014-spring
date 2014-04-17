@@ -13,9 +13,9 @@
 
     <bean id="mySessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
         <property name="dataSource" ref="DataSource"/>
-        <property name="mappingResources">
+        <property name="configLocations">
             <list>
-                <value>hibernate.cfg.xml</value>
+                <value>classpath:hibernate.cfg.xml</value>
             </list>
         </property>
         <property name="hibernateProperties">

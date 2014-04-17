@@ -9,8 +9,12 @@ import org.hibernate.classic.Session;
 import org.junit.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.kirkazan.itis2014spring.pci.dao.Patient;
+import ru.kirkazan.itis2014spring.pci.service.PatientService;
+import ru.kirkazan.itis2014spring.pci.service.PatientServiceHibernate;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -37,6 +41,10 @@ public class PatientServiceHibernateTest
 
         assertEquals("should be found", 1, service.searchByFioAndBd(surname.substring(0,1), name.substring(0,1), father.substring(0,1), 1982).size());
         assertEquals("should be found", 1, service.searchByFioAndBd(surname.substring(0,1), name.substring(0,1), father.substring(0,1), 82).size());
+        assertEquals("should be found", 1, service.searchByFioAndBd(surname.substring(0,1), name.substring(0,1), father.substring(0,1), 5).size());
+        assertEquals("should be found", 1, service.searchByFioAndBd(surname.substring(0,1), name.substring(0,1), father.substring(0,1), 2005).size());
+        assertEquals("should be found", 1, service.searchByFioAndBd(surname.substring(0,1), name.substring(0,1), father.substring(0,1), 14).size());
+        assertEquals("should be found", 1, service.searchByFioAndBd(surname.substring(0,1), name.substring(0,1), father.substring(0,1), 2014).size());
         assertEquals("should be empty", 0, service.searchByFioAndBd("Н", "Е", "Т", 66).size());
     }
 
@@ -101,6 +109,27 @@ public class PatientServiceHibernateTest
         bd.set(1982, Calendar.APRIL, 7);
         patient.setDateOfBirth(bd.getTime());
         session.persist(patient);
+
+
+        patient = new Patient();
+        patient.setFather(father);
+        patient.setName(name);
+        patient.setSurname(surname);
+        patient.setContact(contact);
+        bd = Calendar.getInstance();
+        bd.set(2005, Calendar.APRIL, 7);
+        patient.setDateOfBirth(bd.getTime());
+        session.persist(patient);
+
+        patient = new Patient();
+        patient.setFather(father);
+        patient.setName(name);
+        patient.setSurname(surname);
+        patient.setContact(contact);
+
+        patient.setDateOfBirth(new Date());
+        session.persist(patient);
+
         session.flush();
         session.getTransaction().commit();
         if (session != null) {

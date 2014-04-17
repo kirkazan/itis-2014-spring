@@ -1,10 +1,13 @@
-package ru.kirkazan.itis2014spring.pci;
+package ru.kirkazan.itis2014spring.pci.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import ru.kirkazan.itis2014spring.pci.dao.Patient;
+import ru.kirkazan.itis2014spring.pci.service.PatientInfo;
+import ru.kirkazan.itis2014spring.pci.service.PatientService;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,7 +25,7 @@ public class PatientSearchController {
 
     @RequestMapping("patient")
     @ResponseBody
-    public List<Patient> search(@RequestParam String s) {
+    public List<PatientInfo> search(@RequestParam String s) {
 
         CheckResultFIOBD res = CheckResultFIOBD.match(s);
         if (res.match)
@@ -97,13 +100,15 @@ public class PatientSearchController {
             StringTokenizer stringTokenizer = new StringTokenizer(searchString, " ", false);
             int j = 0;
             while (stringTokenizer.hasMoreElements()) {
-                array.add(j,stringTokenizer.nextToken());
+                array.add(j, stringTokenizer.nextToken());
                 j++;
             }
-            if(j==3)
-               match=true;
+            if (j == 3)
+                match = true;
+            else
+                return null;
 
-            return new CheckResultName(match,array.get(0),array.get(1),array.get(2));
+            return new CheckResultName(match, array.get(0), array.get(1), array.get(2));
         }
     }
 
@@ -125,10 +130,10 @@ public class PatientSearchController {
                 match = true;
             }
             // проверка, является ли адресом почты
-           for(int j=0; j<searchString.length();j++){
+            for (int j = 0; j < searchString.length(); j++) {
                 if (searchString.charAt(j) == '@')
                     match = true;
-           }
+            }
             return new CheckResultContact(match, searchString);
         }
 
