@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import ru.kirkazan.itis2014spring.pci.dao.Patient;
 import ru.kirkazan.itis2014spring.pci.service.PatientInfo;
 import ru.kirkazan.itis2014spring.pci.service.PatientService;
 
@@ -14,9 +13,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
 
-/**
- * Created by Татьяна on 06.03.14.
- */
 @Controller
 public class PatientSearchController {
 
@@ -27,28 +23,40 @@ public class PatientSearchController {
     @ResponseBody
     public List<PatientInfo> search(@RequestParam String s) {
 
-        CheckResultFIOBD res = CheckResultFIOBD.match(s);
+        CheckResultFIOBD res = new CheckResultFIOBD();
+        res = res.match(s);
         if (res.match)
             return patientService.searchByFioAndBd(res.surname, res.name, res.patrName, res.year);
 
-        CheckResultName res1 = CheckResultName.match(s);
+        CheckResultName res1 = new CheckResultName();
+        res1 = res1.match(s);
         if (res1.match)
             return patientService.searchByName(res1.surname, res1.name, res1.patrName);
 
-        CheckResultContact res2 = CheckResultContact.match(s);
-        if (res2.match)
-            return patientService.searchByContact(res2.contact);
+        CheckResultContactOrDocument res2 = new CheckResultContactOrDocument();
+        res2 = res2.match(s);
+        if (res2.match) {
+            List<PatientInfo> result = new ArrayList<>();
+            List<PatientInfo> arrayList1 = patientService.searchByContact(res2.contact);
+            List<PatientInfo> arrayList2 = patientService.searchByDocument(res2.series, res2.number);
+            result.addAll(arrayList1);
+            result.addAll(arrayList2);
 
+            return result;
+        }
 
         return Collections.emptyList();
     }
 
     static class CheckResultFIOBD {
-        static boolean match;
-        static String surname;
-        static String name;
-        static String patrName;
-        static int year;
+        boolean match;
+        String surname;
+        String name;
+        String patrName;
+        int year;
+
+        CheckResultFIOBD() {
+        }
 
         CheckResultFIOBD(boolean match, String surname, String name, String patrName, int year) {
             this.match = match;
@@ -59,7 +67,7 @@ public class PatientSearchController {
 
         }
 
-        public static CheckResultFIOBD match(String searchString) {
+        public CheckResultFIOBD match(String searchString) {
             if (searchString.length() == 5) {
 
                 char c1 = searchString.charAt(searchString.length() - 1);
@@ -82,10 +90,13 @@ public class PatientSearchController {
     }
 
     static class CheckResultName {
-        static boolean match;
-        static String surname;
-        static String name;
-        static String patrName;
+        boolean match;
+        String surname;
+        String name;
+        String patrName;
+
+        CheckResultName() {
+        }
 
         CheckResultName(boolean match, String surname, String name, String patrName) {
             this.match = match;
@@ -94,51 +105,65 @@ public class PatientSearchController {
             this.patrName = patrName;
         }
 
-        public static CheckResultName match(String searchString) {
+        public CheckResultName match(String searchString) {
 
-            ArrayList<String> array = new ArrayList();
+            ArrayList<String> array = new ArrayList<>();
             StringTokenizer stringTokenizer = new StringTokenizer(searchString, " ", false);
             int j = 0;
             while (stringTokenizer.hasMoreElements()) {
                 array.add(j, stringTokenizer.nextToken());
                 j++;
             }
-            if (j == 3)
+            if (j == 3) {
                 match = true;
-            else
-                return null;
-
-            return new CheckResultName(match, array.get(0), array.get(1), array.get(2));
+                surname = array.get(0);
+                name = array.get(1);
+                patrName = array.get(2);
+            }
+            return new CheckResultName(match, surname, name, patrName);
         }
+
     }
 
-    static class CheckResultContact {
-        static boolean match;
+    static class CheckResultContactOrDocument {
+        boolean match;
         String contact;
+        String series;
+        String number;
 
+        CheckResultContactOrDocument() {
+        }
 
-        CheckResultContact(boolean match, String contact) {
+        CheckResultContactOrDocument(boolean match, String contact) {
             this.match = match;
             this.contact = contact;
         }
 
-        public static CheckResultContact match(String searchString) {
-            char c1 = searchString.charAt(0);
-            char c2 = searchString.charAt(1);
-            // проверка, является ли телефоном
-            if ((c1 == '+' && c2 == '7') || (c1 == '7' && c2 == '9') || (c1 == '8' && c2 == '9')) {
-                match = true;
-            }
-            // проверка, является ли адресом почты
-            for (int j = 0; j < searchString.length(); j++) {
-                if (searchString.charAt(j) == '@')
-                    match = true;
-            }
-            return new CheckResultContact(match, searchString);
+        CheckResultContactOrDocument(boolean match, String series, String number) {
+            this.match = match;
+            this.series = series;
+            this.number = number;
         }
 
-    }
+        public CheckResultContactOrDocument match(String searchString) {
+            ArrayList<String> array = new ArrayList<>();
+            StringTokenizer stringTokenizer = new StringTokenizer(searchString, " ", false);
+            int j = 0;
+            while (stringTokenizer.hasMoreElements()) {
+                array.add(j, stringTokenizer.nextToken());
+                j++;
+            }
+            if (j == 1) {
+                contact = searchString;
+                return new CheckResultContactOrDocument(true, contact);
+            } else {
+                series = array.get(0);
+                number = array.get(1);
+                return new CheckResultContactOrDocument(true, series, number);
+            }
 
+        }
+    }
 }
 
 

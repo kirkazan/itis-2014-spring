@@ -22,19 +22,31 @@ public class PatientSearchControllerTest
     PatientService patientService;
 
     @Test
-    public void test()
+    public void testByFioAndBd()
     {
-        patientController.search("СЭР82");
+       patientController.search("СЭР82");
 
         Mockito.verify(patientService).searchByFioAndBd("С","Э","Р",82);
     }
 
     @Test
-    public void test2() {
+    public void testByName() {
 
         patientController.search("Садыков Эдуард Рустемович");
-
-        Mockito.verify(patientService).searchByName("Садыков", "Эдуард", "Рустемович");
+        Mockito.verify(patientService).searchByName("Садыков","Эдуард","Рустемович");
     }
 
+    @Test
+    public void testByDocs() {
+
+        patientController.search("9207 223344");
+        Mockito.verify(patientService).searchByDocument("9207","223344");
+    }
+
+    @Test
+    public void testByContacts() {
+
+        patientController.search("89172777666");
+        Mockito.verify(patientService).searchByContact("89172777666");
+    }
 }
